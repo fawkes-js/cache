@@ -19,5 +19,11 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "optionalDependencies": {
+    "redis": "^4.6.8"
+  },
+  "devDependencies": {
+    "@fawkes.js/typings": "^6.0.0"
+  }
 }
