@@ -93,6 +93,7 @@ export class LocalClient implements ICacheClient {
     }
 
     this.cache[id] = { data, expire: expire };
+
     return this.cache[id].data;
   }
 
@@ -113,6 +114,7 @@ export class LocalClient implements ICacheClient {
     if (!cache.expire) return null;
     else {
       const expiry = (cache.expire - Date.now()) / 1000;
+
       if (expiry <= 0) delete this.cache[id];
       else return expiry;
     }

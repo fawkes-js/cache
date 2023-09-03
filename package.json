@@ -1,6 +1,6 @@
 {
   "name": "@fawkes.js/cache",
-  "version": "1.0.0",
+  "version": "10.0.2",
   "description": "The cache client that is designed to work with the other Fawkes.js libraries.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
