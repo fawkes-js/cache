@@ -77,8 +77,18 @@ export class RedisClient implements ICacheClient {
     else return JSON.parse(data);
   }
 
-  async set(id: string, data: any): Promise<any> {
-    return await this.cache.set(id, JSON.stringify(data));
+  async set(id: string, data: any, options?: { get?: boolean; EX?: number; PXAT?: number; KEEPTTL?: boolean }): Promise<any> {
+    const setOptions: any = {};
+    if (options) {
+      if (options.get === true) setOptions.GET = true;
+
+      if (options.EX) setOptions.EX = options.EX;
+      if (options.PXAT) setOptions.PXAT = options.PXAT;
+      if (options.KEEPTTL) setOptions.KEEPTTL = options.KEEPTTL;
+    }
+
+    const set = await this.cache.set(id, JSON.stringify(data), setOptions);
+    return set;
   }
 
   async del(id: string): Promise<any> {
@@ -86,14 +96,11 @@ export class RedisClient implements ICacheClient {
   }
 
   async has(id: string): Promise<any> {
-    const key = `guild:${id}`;
-    if ((await this.cache.get(key)) !== null) return true;
+    if ((await this.cache.get(id)) !== null) return true;
     else return false;
   }
 
-  async patch(id: string, data: DiscordAPIGuild): Promise<any> {
-    const key = `guild:${id}`;
-
-    return await this.cache.set(key, JSON.stringify(data));
+  async ttl(id: string): Promise<any> {
+    return await this.cache.ttl(id);
   }
 }

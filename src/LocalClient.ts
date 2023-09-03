@@ -78,12 +78,22 @@ export class LocalClient implements ICacheClient {
 
   async get(id: string): Promise<any> {
     if (!this.cache[id]) return null;
-    else return this.cache[id];
+    else return this.cache[id].data;
   }
 
-  async set(id: string, data: any): Promise<object> {
-    this.cache[id] = data;
-    return this.cache[id];
+  async set(id: string, data: any, options?: { get?: boolean; EX?: number; PXAT?: number; KEEPTTL?: boolean }): Promise<object> {
+    let expire: number | null = null;
+
+    if (options) {
+      if (options.EX) {
+        expire = Date.now() + options.EX! * 1000;
+      }
+      if (options.PXAT) expire = options.PXAT;
+      if (options.KEEPTTL) expire = this.cache[id].expire;
+    }
+
+    this.cache[id] = { data, expire: expire };
+    return this.cache[id].data;
   }
 
   async del(id: string): Promise<void> {
@@ -92,7 +102,19 @@ export class LocalClient implements ICacheClient {
   }
 
   async has(id: string): Promise<boolean> {
-    if (this.cache[id]) return true;
+    if (this.cache[id].data) return true;
     else return false;
+  }
+
+  async ttl(id: string) {
+    const cache = this.cache[id];
+
+    if (!cache) return null;
+    if (!cache.expire) return null;
+    else {
+      const expiry = (cache.expire - Date.now()) / 1000;
+      if (expiry <= 0) delete this.cache[id];
+      else return expiry;
+    }
   }
 }
