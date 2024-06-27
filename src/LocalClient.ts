@@ -119,4 +119,8 @@ export class LocalClient implements ICacheClient {
       else return expiry;
     }
   }
+
+  async keys(id: string): Promise<any> {
+    return await this.cache.find((key: string) => key.startsWith(id));
+  }
 }

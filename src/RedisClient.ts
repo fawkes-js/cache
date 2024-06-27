@@ -38,6 +38,10 @@ class RedisCache {
     if ((await this.cache.get(key)) !== null) return true;
     else return false;
   }
+
+  async keys(id: string): Promise<any> {
+    return await this.cache.keys(id);
+  }
 }
 
 export class RedisClient implements ICacheClient {
@@ -102,5 +106,9 @@ export class RedisClient implements ICacheClient {
 
   async ttl(id: string): Promise<any> {
     return await this.cache.ttl(id);
+  }
+
+  async keys(id: string): Promise<any> {
+    return await this.cache.keys(`${id}*`);
   }
 }
