@@ -15,7 +15,6 @@
     "amqplib": "^0.10.3",
     "axios": "^1.2.1",
     "dotenv": "^16.0.3",
-    "erlpack": "^0.1.4",
     "redis": "^4.5.1",
     "ws": "^8.11.0"
   },
@@ -37,7 +36,5 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "files": [
-    "dist"
-  ]
+  "files": ["dist"]
 }
